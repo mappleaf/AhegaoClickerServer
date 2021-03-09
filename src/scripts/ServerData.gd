@@ -12,5 +12,5 @@ func _ready() -> void:
 
 	var units_list_file = File.new()
 	units_list_file.open("res://Data/units_list.json", File.READ)
-	var units_list = parse_json(units_list_file.get_as_text())
+	units_list = parse_json(units_list_file.get_as_text())
 	units_list_file.close()
