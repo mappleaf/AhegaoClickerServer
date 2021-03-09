@@ -10,6 +10,10 @@ func _ready() -> void:
 #	units_list = units_list_json.result
 #	print(units_list)
 
+	get_units()
+
+
+func get_units() -> void:
 	var units_list_file = File.new()
 	units_list_file.open("res://Data/units_list.json", File.READ)
 	units_list = parse_json(units_list_file.get_as_text())

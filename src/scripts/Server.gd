@@ -7,6 +7,7 @@ var max_players = 4095
 
 func _ready() -> void:
 	StartServer()
+	print(str(ServerData.units_list))
 
 
 func StartServer() -> void:
