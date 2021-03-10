@@ -4,10 +4,13 @@ var network = NetworkedMultiplayerENet.new()
 var port = 1909
 var max_players = 4095
 
+var expected_tokens = []
+
 onready var playerVerification = $PlayerVerification
 
 
 func _ready() -> void:
+	randomize()
 	StartServer()
 	print(str(ServerData.units_list))
 
@@ -19,6 +22,17 @@ func StartServer() -> void:
 	
 	network.connect("peer_connected", self, "_peer_connected")
 	network.connect("peer_disconnected", self, "_peer_disconnected")
+
+func FetchToken(peer_id) -> void:
+	rpc_id(peer_id, "FetchToken")
+
+remote func ReturnToken(token) -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	playerVerification.Verify(peer_id, token)
+
+func ReturnTokenVerificationResults(peer_id, result) -> void:
+	rpc_id(peer_id, "ReturnTokenVerificationResults", result)
+
 
 remote func send_units_list() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
@@ -60,3 +74,15 @@ func _peer_connected(id) -> void:
 func _peer_disconnected(id) -> void:
 	print("Peer id " + str(id) + " disconnected")
 	get_node(str(id)).queue_free()
+
+
+func _on_TokenExpiration_timeout() -> void:
+	var current_time = OS.get_unix_time()
+	var token_time
+	if expected_tokens == []:
+		pass
+	else:
+		for i in range(expected_tokens.size() -1, -1, -1):
+			token_time = int(expected_tokens[i].right(64))
+			if current_time - token_time >= 30:
+				expected_tokens.remove(i)
