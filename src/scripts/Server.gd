@@ -4,6 +4,8 @@ var network = NetworkedMultiplayerENet.new()
 var port = 1909
 var max_players = 4095
 
+onready var playerVerification = $PlayerVerification
+
 
 func _ready() -> void:
 	StartServer()
@@ -22,11 +24,26 @@ remote func send_units_list() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
 	var data = ServerData.units_list
 	rpc_id(peer_id, "_return_units_list", data)
-	print("Sending " + str(data) + " to peer id " + str(peer_id))
+
+remote func send_owned_units() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var units = get_node(str(peer_id)).owned_units
+	rpc_id(peer_id, "_return_owned_units", units)
+
+remote func send_units_in_room() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var units = get_node(str(peer_id)).units_in_room
+	rpc_id(peer_id, "_return_units_in_room", units)
+
+remote func get_units_in_room(list) -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	get_node(str(peer_id)).units_in_room = list
 
 
 func _peer_connected(id) -> void:
 	print("Peer id " + str(id) + " connected")
+	playerVerification.start(id)
 
 func _peer_disconnected(id) -> void:
 	print("Peer id " + str(id) + " disconnected")
+	get_node(str(id)).queue_free()

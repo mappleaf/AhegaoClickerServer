@@ -1,6 +1,12 @@
 extends Node
 
 var units_list = {}
+var test_data = {
+	"owned_units": {
+		TEST = "res://src/scenes/units/TestUnit.tscn"
+	},
+	"units_in_room": {}
+}
 
 func _ready() -> void:
 #	var units_list_file = File.new()
