@@ -39,6 +39,19 @@ remote func get_units_in_room(list) -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
 	get_node(str(peer_id)).units_in_room = list
 
+remote func add_random_unit() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var unit_type_index = randi() % ServerData.units_list.keys().size()
+	var unit_type = ServerData.units_list.keys()[unit_type_index]
+	
+	if !get_node(str(peer_id)).owned_units.keys().has(unit_type):
+		get_node(str(peer_id)).owned_units[unit_type] = ServerData.units_list[unit_type]
+	else:
+		pass
+	
+	var units = get_node(str(peer_id)).owned_units
+	rpc_id(peer_id, "_return_owned_units", units)
+
 
 func _peer_connected(id) -> void:
 	print("Peer id " + str(id) + " connected")
