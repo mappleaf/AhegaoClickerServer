@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 ServerData="*res://src/scripts/ServerData.gd"
 HubConnection="*res://src/scenes/HubConnection.tscn"
+PlayerData="*res://src/scenes/PlayerData.tscn"
 
 [rendering]
 

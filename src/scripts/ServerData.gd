@@ -7,6 +7,16 @@ var test_data = {
 	},
 	"units_in_room": {}
 }
+var starting_data = {
+	"owned_units": {
+		TEST = "res://src/scenes/units/TestUnit.tscn"
+	},
+	"units_in_room": {},
+	"money": 100,
+	"gacha_starting": 10,
+	"gacha_regular": 0,
+	"gacha_special": 0
+}
 
 func _ready() -> void:
 #	var units_list_file = File.new()

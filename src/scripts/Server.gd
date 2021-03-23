@@ -5,6 +5,7 @@ var port = 1909
 var max_players = 4095
 
 var expected_tokens = []
+var user_pairs = {}
 
 onready var playerVerification = $PlayerVerification
 
@@ -66,6 +67,17 @@ remote func add_random_unit() -> void:
 	var units = get_node(str(peer_id)).owned_units
 	rpc_id(peer_id, "_return_owned_units", units)
 
+remote func get_user_money() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var count = get_node(str(peer_id)).money
+	rpc_id(peer_id, "_return_money_count", count)
+
+func RemovePlayerContainer(peer_id) -> void:
+	var container = get_node(str(peer_id))
+	var token = container.token
+	user_pairs.erase(token)
+	container.queue_free()
+
 
 func _peer_connected(id) -> void:
 	print("Peer id " + str(id) + " connected")
@@ -73,7 +85,7 @@ func _peer_connected(id) -> void:
 
 func _peer_disconnected(id) -> void:
 	print("Peer id " + str(id) + " disconnected")
-	get_node(str(id)).queue_free()
+	RemovePlayerContainer(id)
 
 
 func _on_TokenExpiration_timeout() -> void:

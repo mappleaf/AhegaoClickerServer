@@ -29,8 +29,9 @@ func ConnectToServer() -> void:
 	network.connect("connection_failed", self, "_on_connection_failed")
 	network.connect("connection_succeeded", self, "_on_connection_succeeded")
 
-remote func RecieveLoginToken(token) -> void:
+remote func RecieveLoginToken(token, username) -> void:
 	gameserver.expected_tokens.append(token)
+	gameserver.user_pairs[token] = username
 
 
 func _on_server_disconnected() -> void:
