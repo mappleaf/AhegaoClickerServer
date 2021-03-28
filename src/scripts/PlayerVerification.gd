@@ -39,6 +39,7 @@ func CreatePlayerContainer(id, is_new, username, token) -> void:
 	get_parent().add_child(new_player_container, true)
 	var player_container = main_interface.get_node(str(id))
 	FillPlayerContainer(player_container, is_new, username, token)
+	main_interface.user_peers[username] = id
 
 func FillPlayerContainer(player_container, is_new, username, token) -> void:
 	if is_new:

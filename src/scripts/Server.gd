@@ -6,6 +6,7 @@ var max_players = 4095
 
 var expected_tokens = []
 var user_pairs = {}
+var user_peers = {}
 
 onready var playerVerification = $PlayerVerification
 
@@ -69,6 +70,10 @@ remote func add_random_unit() -> void:
 
 remote func get_user_money() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
+	var count = get_node(str(peer_id)).money
+	rpc_id(peer_id, "_return_money_count", count)
+
+func send_user_money(peer_id) -> void:
 	var count = get_node(str(peer_id)).money
 	rpc_id(peer_id, "_return_money_count", count)
 
