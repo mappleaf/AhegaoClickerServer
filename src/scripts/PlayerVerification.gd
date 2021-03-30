@@ -51,6 +51,7 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 		player_container.gacha_starting = ServerData.starting_data.gacha_starting
 		player_container.gacha_regular = ServerData.starting_data.gacha_regular
 		player_container.gacha_special = ServerData.starting_data.gacha_special
+		player_container.enemy = ServerData.starting_data.enemy
 		
 		PlayerData.player_data[username] = {}
 		PlayerData.player_data[username].owned_units = ServerData.starting_data.owned_units
@@ -59,16 +60,53 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 		PlayerData.player_data[username].gacha_starting = ServerData.starting_data.gacha_starting
 		PlayerData.player_data[username].gacha_regular = ServerData.starting_data.gacha_regular
 		PlayerData.player_data[username].gacha_special = ServerData.starting_data.gacha_special
+		PlayerData.player_data[username].enemy = ServerData.starting_data.enemy
 		PlayerData.save_player_data()
 	elif username != null:
 		player_container.username = username
 		player_container.token = token
-		player_container.owned_units = PlayerData.player_data[username].owned_units
-		player_container.units_in_room = PlayerData.player_data[username].units_in_room
-		player_container.money = PlayerData.player_data[username].money
-		player_container.gacha_starting = PlayerData.player_data[username].gacha_starting
-		player_container.gacha_regular = PlayerData.player_data[username].gacha_regular
-		player_container.gacha_special = PlayerData.player_data[username].gacha_special
+		if !PlayerData.player_data[username].keys().has("owned_units"):
+			player_container.owned_units = ServerData.starting_data.owned_units
+			PlayerData.player_data[username].owned_units = ServerData.starting_data.owned_units
+			PlayerData.save_player_data()
+		else:
+			player_container.owned_units = PlayerData.player_data[username].owned_units
+		if !PlayerData.player_data[username].keys().has("units_in_room"):
+			player_container.units_in_room = ServerData.starting_data.units_in_room
+			PlayerData.player_data[username].units_in_room = ServerData.starting_data.units_in_room
+			PlayerData.save_player_data()
+		else:
+			player_container.units_in_room = PlayerData.player_data[username].units_in_room
+		if !PlayerData.player_data[username].keys().has("money"):
+			player_container.money = ServerData.starting_data.money
+			PlayerData.player_data[username].money = ServerData.starting_data.money
+			PlayerData.save_player_data()
+		else:
+			player_container.money = PlayerData.player_data[username].money
+		if !PlayerData.player_data[username].keys().has("gacha_starting"):
+			player_container.gacha_starting = ServerData.starting_data.gacha_starting
+			PlayerData.player_data[username].gacha_starting = ServerData.starting_data.gacha_starting
+			PlayerData.save_player_data()
+		else:
+			player_container.gacha_starting = PlayerData.player_data[username].gacha_starting
+		if !PlayerData.player_data[username].keys().has("gacha_regular"):
+			player_container.gacha_regular = ServerData.starting_data.gacha_regular
+			PlayerData.player_data[username].gacha_regular = ServerData.starting_data.gacha_regular
+			PlayerData.save_player_data()
+		else:
+			player_container.gacha_regular = PlayerData.player_data[username].gacha_regular
+		if !PlayerData.player_data[username].keys().has("gacha_special"):
+			player_container.gacha_special = ServerData.starting_data.gacha_special
+			PlayerData.player_data[username].gacha_special = ServerData.starting_data.gacha_special
+			PlayerData.save_player_data()
+		else:
+			player_container.gacha_special = PlayerData.player_data[username].gacha_special
+		if !PlayerData.player_data[username].keys().has("enemy"):
+			player_container.enemy = ServerData.starting_data.enemy
+			PlayerData.player_data[username].enemy = ServerData.starting_data.enemy
+			PlayerData.save_player_data()
+		else:
+			player_container.enemy = PlayerData.player_data[username].enemy
 
 
 func _on_VerificationExpiration_timeout():

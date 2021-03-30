@@ -1,0 +1,4 @@
+{
+	"WOLF": "res://src/scenes/enemies/Wolf.tscn",
+	"GOBLIN": "res://src/scenes/enemies/Goblin.tscn"
+}

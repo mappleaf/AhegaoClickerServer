@@ -73,6 +73,16 @@ remote func get_user_money() -> void:
 	var count = get_node(str(peer_id)).money
 	rpc_id(peer_id, "_return_money_count", count)
 
+remote func send_enemies_list() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var data = ServerData.enemies
+	rpc_id(peer_id, "_return_enemies_list", data)
+
+remote func send_current_enemy() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var enemy = get_node(str(peer_id)).enemy
+	rpc_id(peer_id, "_return_current_enemy", enemy)
+
 func send_user_money(peer_id) -> void:
 	var count = get_node(str(peer_id)).money
 	rpc_id(peer_id, "_return_money_count", count)

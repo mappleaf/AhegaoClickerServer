@@ -1,12 +1,8 @@
 extends Node
 
 var units_list = {}
-var test_data = {
-	"owned_units": {
-		TEST = "res://src/scenes/units/TestUnit.tscn"
-	},
-	"units_in_room": {}
-}
+var enemies = {}
+
 var starting_data = {
 	"owned_units": {
 		TEST = "res://src/scenes/units/TestUnit.tscn"
@@ -15,7 +11,15 @@ var starting_data = {
 	"money": 100,
 	"gacha_starting": 10,
 	"gacha_regular": 0,
-	"gacha_special": 0
+	"gacha_special": 0,
+	"enemy": {
+		enemy_name = "Goblin",
+		location = "res://src/scenes/enemies/Goblin.tscn",
+		texture_location = "res://assets/test/klipartz.com.png",
+		max_health = 100,
+		health = 100,
+		modificator = 0
+	}
 }
 
 func _ready() -> void:
@@ -27,6 +31,7 @@ func _ready() -> void:
 #	print(units_list)
 
 	get_units()
+	get_enemies()
 
 
 func get_units() -> void:
@@ -34,3 +39,9 @@ func get_units() -> void:
 	units_list_file.open("res://Data/units_list.json", File.READ)
 	units_list = parse_json(units_list_file.get_as_text())
 	units_list_file.close()
+
+func get_enemies() -> void:
+	var enemies_file = File.new()
+	enemies_file.open("res://Data/enemies_list.json", File.READ)
+	enemies = parse_json(enemies_file.get_as_text())
+	enemies_file.close()
