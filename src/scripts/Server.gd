@@ -68,6 +68,12 @@ remote func add_random_unit() -> void:
 	var units = get_node(str(peer_id)).owned_units
 	rpc_id(peer_id, "_return_owned_units", units)
 
+remote func sync_enemy_health(value) -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var container = get_node(str(peer_id))
+	container.enemy.health = value
+	PlayerData.player_data[container.username].enemy.health = value
+
 remote func get_user_money() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
 	var count = get_node(str(peer_id)).money
@@ -81,11 +87,44 @@ remote func send_enemies_list() -> void:
 remote func send_current_enemy() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
 	var enemy = get_node(str(peer_id)).enemy
-	rpc_id(peer_id, "_return_current_enemy", enemy)
+	rpc_id(peer_id, "_return_current_enemy", enemy, false)
+
+remote func killed_enemy() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var container = get_node(str(peer_id))
+	
+	var min_money = container.enemy.min_money
+	var max_money = container.enemy.max_money
+	
+	var money_for_kill = randi() % int(max_money) + int(min_money)
+	#var enemy_level = max(randi() % (int(container.level) + 5) + (int(container.level) - 5), 1)
+	var enemy_level = max(int(rand_range(container.level + 5, container.level - 5)), 1)
+	
+	PlayerData.player_data[container.username].money += money_for_kill
+	container.money += money_for_kill
+	send_user_money(peer_id)
+	send_new_enemy(peer_id, enemy_level)
 
 func send_user_money(peer_id) -> void:
 	var count = get_node(str(peer_id)).money
 	rpc_id(peer_id, "_return_money_count", count)
+
+func send_new_enemy(peer_id, enemy_level) -> void:
+	var container = get_node(str(peer_id))
+	
+	var temp_enemies = ServerData.enemies.duplicate()
+	var enemy_keys = temp_enemies.keys()
+	enemy_keys.shuffle()
+	var enemy_key = enemy_keys.pop_front()
+	
+	var enemy = temp_enemies[enemy_key].duplicate()
+	enemy.max_health = int(enemy.max_health * (enemy_level * enemy.health_factor))
+	enemy.health = enemy.max_health
+	
+	PlayerData.player_data[container.username].enemy = enemy
+	container.enemy = enemy
+	
+	rpc_id(peer_id, "_return_current_enemy", enemy, true)
 
 func RemovePlayerContainer(peer_id) -> void:
 	var container = get_node(str(peer_id))

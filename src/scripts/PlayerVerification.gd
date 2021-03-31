@@ -61,6 +61,7 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 		PlayerData.player_data[username].gacha_regular = ServerData.starting_data.gacha_regular
 		PlayerData.player_data[username].gacha_special = ServerData.starting_data.gacha_special
 		PlayerData.player_data[username].enemy = ServerData.starting_data.enemy
+		PlayerData.player_data[username].level = ServerData.starting_data.level
 		PlayerData.save_player_data()
 	elif username != null:
 		player_container.username = username
@@ -107,6 +108,12 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 			PlayerData.save_player_data()
 		else:
 			player_container.enemy = PlayerData.player_data[username].enemy
+		if !PlayerData.player_data[username].keys().has("level"):
+			player_container.level = ServerData.starting_data.level
+			PlayerData.player_data[username].level = ServerData.starting_data.level
+			PlayerData.save_player_data()
+		else:
+			player_container.level = PlayerData.player_data[username].level
 
 
 func _on_VerificationExpiration_timeout():

@@ -1,4 +1,22 @@
 {
-	"WOLF": "res://src/scenes/enemies/Wolf.tscn",
-	"GOBLIN": "res://src/scenes/enemies/Goblin.tscn"
+	"WOLF": {
+		"enemy_name": "Wolf",
+		"texture_location": "res://assets/test/pngwing.com.png",
+		"max_health": 200,
+		"health": 200,
+		"health_factor": 0.75,
+		"modificators": [0, 1, 2, 3],
+		"min_money": 20,
+		"max_money": 100
+	},
+	"GOBLIN": {
+		"enemy_name": "Goblin",
+		"texture_location": "res://assets/test/klipartz.com.png",
+		"max_health": 100,
+		"health": 100,
+		"health_factor": 1,
+		"modificator": [0, 1, 2, 3],
+		"min_money": 10,
+		"max_money": 50
+	}
 }

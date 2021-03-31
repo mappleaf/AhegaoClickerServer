@@ -14,12 +14,15 @@ var starting_data = {
 	"gacha_special": 0,
 	"enemy": {
 		enemy_name = "Goblin",
-		location = "res://src/scenes/enemies/Goblin.tscn",
 		texture_location = "res://assets/test/klipartz.com.png",
 		max_health = 100,
 		health = 100,
-		modificator = 0
-	}
+		health_factor = 0.75,
+		modificators = [0, 1, 2, 3],
+		min_money = 10,
+		max_money = 50
+	},
+	"level": 1
 }
 
 func _ready() -> void:
