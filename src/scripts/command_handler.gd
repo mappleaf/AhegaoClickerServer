@@ -11,7 +11,10 @@ enum {
 
 const valid_commands = [
 	["set_money",
-		[ARG_STRING, ARG_INT]]
+		[ARG_STRING, ARG_INT]],
+	["save_player_data",
+		[]]
+	
 ]
 
 
@@ -27,3 +30,7 @@ func set_money(username, money) -> String:
 			main_interface.send_user_money(peer)
 	
 	return str("Successfully set ", username, "'s money to", money)
+
+func save_player_data() -> String:
+	PlayerData.save_player_data()
+	return str("Successfully saved player data")
