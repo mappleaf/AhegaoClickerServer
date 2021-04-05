@@ -1,4 +1,8 @@
 {
 	"TEST": "res://src/scenes/units/TestUnit.tscn",
-	"TEST2": "res://src/scenes/units/TestUnit2.tscn"
+	"TEST2": "res://src/scenes/units/TestUnit2.tscn",
+	"PACK1_1": "res://assets/test/Pack1/1.png",
+	"PACK1_2": "res://assets/test/Pack1/4.png",
+	"PACK1_3": "res://assets/test/Pack1/9.png",
+	"PACK1_4": "res://assets/test/Pack1/11.png"
 }

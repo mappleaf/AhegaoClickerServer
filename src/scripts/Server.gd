@@ -68,6 +68,19 @@ remote func add_random_unit() -> void:
 	var units = get_node(str(peer_id)).owned_units
 	rpc_id(peer_id, "_return_owned_units", units)
 
+func add_unit(username, key) -> void:
+	var peer_id = user_peers[username]
+	var container = get_node(str(peer_id))
+	
+	if !container.owned_units.keys().has(key):
+		container.owned_units[key] = ServerData.units_list[key]
+	else:
+		container.stardust += 100
+		PlayerData.player_data[username].stardust += 100
+	
+	var units = container.owned_units
+	rpc_id(peer_id, "_return_owned_units", units)
+
 remote func sync_enemy_health(value) -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
 	var container = get_node(str(peer_id))
@@ -78,6 +91,15 @@ remote func get_user_money() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
 	var count = get_node(str(peer_id)).money
 	rpc_id(peer_id, "_return_money_count", count)
+
+remote func get_user_stardust() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var count = get_node(str(peer_id)).stardust
+	rpc_id(peer_id, "_return_stardust", count)
+
+func send_user_stardust(peer_id) -> void:
+	var count = get_node(str(peer_id)).stardust
+	rpc_id(peer_id, "_return_stardust", count)
 
 remote func send_enemies_list() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
@@ -104,6 +126,50 @@ remote func killed_enemy() -> void:
 	container.money += money_for_kill
 	send_user_money(peer_id)
 	send_new_enemy(peer_id, enemy_level)
+
+remote func get_user_gacha() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var container = get_node(str(peer_id))
+	
+	var gacha_array = [container.gacha_starting, container.gacha_regular, container.gacha_special]
+	
+	rpc_id(peer_id, "_return_gacha", gacha_array)
+
+remote func open_gacha(gacha_type) -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var container = get_node(str(peer_id))
+	
+	match gacha_type:
+		"gacha_starting":
+			pass
+		"gacha_regular":
+			pass
+		"gacha_special":
+			if container.gacha_special >= 1:
+				container.gacha_special -= 1
+				var d = randf()
+				
+				#TESTING!!!
+				while d < 0.7:
+					d = randf()
+				
+				if d < 0.7:
+					var drops = ServerData.gachas.special.star3.duplicate()
+					drops.shuffle()
+					var drop_key = drops.pop_front()
+					add_unit(container.username, drop_key)
+				elif d < 0.94:
+					var drops = ServerData.gachas.special.star4.duplicate()
+					drops.shuffle()
+					var drop_key = drops.pop_front()
+					add_unit(container.username, drop_key)
+				else:
+					var drops = ServerData.gachas.special.star5.duplicate()
+					drops.shuffle()
+					var drop_key = drops.pop_front()
+					add_unit(container.username, drop_key)
+			else:
+				print(str("Not enough special gacha on user ", peer_id))
 
 func send_user_money(peer_id) -> void:
 	var count = get_node(str(peer_id)).money

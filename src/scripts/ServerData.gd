@@ -2,6 +2,7 @@ extends Node
 
 var units_list = {}
 var enemies = {}
+var gachas = {}
 
 var starting_data = {
 	"owned_units": {
@@ -22,7 +23,8 @@ var starting_data = {
 		min_money = 10,
 		max_money = 50
 	},
-	"level": 1
+	"level": 1,
+	"stardust": 0
 }
 
 func _ready() -> void:
@@ -35,6 +37,7 @@ func _ready() -> void:
 
 	get_units()
 	get_enemies()
+	get_gachas()
 
 
 func get_units() -> void:
@@ -48,3 +51,9 @@ func get_enemies() -> void:
 	enemies_file.open("res://Data/enemies_list.json", File.READ)
 	enemies = parse_json(enemies_file.get_as_text())
 	enemies_file.close()
+
+func get_gachas() -> void:
+	var gachas_file = File.new()
+	gachas_file.open("res://Data/gachas.json", File.READ)
+	gachas = parse_json(gachas_file.get_as_text())
+	gachas_file.close()

@@ -11,3 +11,4 @@ var gacha_regular
 var gacha_special
 var enemy
 var level
+var stardust
