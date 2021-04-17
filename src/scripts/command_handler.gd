@@ -17,8 +17,9 @@ const valid_commands = [
 	["set_gacha",
 		[ARG_STRING, ARG_STRING, ARG_INT]],
 	["set_stardust",
-		[ARG_STRING, ARG_INT]]
-	
+		[ARG_STRING, ARG_INT]],
+	["stop",
+		[]]
 ]
 
 
@@ -79,3 +80,7 @@ func set_gacha(username, type, count) -> String:
 			return str("Cannot find user \"", username, "\"")
 	
 	return str("Successfully set ", username, "'s gacha to ", count, " of type \"", type, "\"")
+
+func stop() -> void:
+	PlayerData.save_player_data()
+	get_tree().quit()
