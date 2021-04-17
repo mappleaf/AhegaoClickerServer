@@ -35,6 +35,14 @@ remote func ReturnToken(token) -> void:
 func ReturnTokenVerificationResults(peer_id, result) -> void:
 	rpc_id(peer_id, "ReturnTokenVerificationResults", result)
 
+remote func FetchServerTime(client_time) -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	rpc_id(peer_id, "ReturnServerTime", OS.get_system_time_msecs(), client_time)
+
+remote func DetermineLatency(client_time) -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	rpc_id(peer_id, "ReturnLatency", client_time)
+
 
 remote func send_units_list() -> void:
 	var peer_id = get_tree().get_rpc_sender_id()
