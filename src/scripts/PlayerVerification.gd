@@ -52,6 +52,9 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 		player_container.gacha_regular = ServerData.starting_data.gacha_regular
 		player_container.gacha_special = ServerData.starting_data.gacha_special
 		player_container.enemy = ServerData.starting_data.enemy
+		player_container.level = ServerData.starting_data.level
+		player_container.weapons = ServerData.starting_data.weapons
+		player_container.stardust = ServerData.starting_data.stardust
 		
 		PlayerData.player_data[username] = {}
 		PlayerData.player_data[username].owned_units = ServerData.starting_data.owned_units
@@ -62,6 +65,8 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 		PlayerData.player_data[username].gacha_special = ServerData.starting_data.gacha_special
 		PlayerData.player_data[username].enemy = ServerData.starting_data.enemy
 		PlayerData.player_data[username].level = ServerData.starting_data.level
+		PlayerData.player_data[username].weapons = ServerData.starting_data.weapons
+		PlayerData.player_data[username].stardust = ServerData.starting_data.stardust
 	elif username != null:
 		player_container.username = username
 		player_container.token = token
@@ -110,6 +115,11 @@ func FillPlayerContainer(player_container, is_new, username, token) -> void:
 			PlayerData.player_data[username].stardust = ServerData.starting_data.stardust
 		else:
 			player_container.stardust = PlayerData.player_data[username].stardust
+		if !PlayerData.player_data[username].keys().has("weapons"):
+			player_container.weapons = ServerData.starting_data.weapons
+			PlayerData.player_data[username].weapons = ServerData.starting_data.weapons
+		else:
+			player_container.weapons = PlayerData.player_data[username].weapons
 
 
 func _on_VerificationExpiration_timeout():

@@ -12,3 +12,4 @@ var gacha_special
 var enemy
 var level
 var stardust
+var weapons

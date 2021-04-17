@@ -1,8 +1,19 @@
 extends Node
 
 var units_list = {}
+var weapons_list = {}
 var enemies = {}
 var gachas = {}
+
+var weapon_rarity_distribution = {
+	"common": 70,
+	"uncommon": 17,
+	"rare": 9,
+	"epic": 3,
+	"legendary": 1
+}
+var weapon_stats = ["damage", "coinMultiplier", "enchantability"]
+var weapon_scaling_stats = ["damage", "enchantability"]
 
 var starting_data = {
 	"owned_units": {
@@ -24,7 +35,8 @@ var starting_data = {
 		max_money = 50
 	},
 	"level": 1,
-	"stardust": 0
+	"stardust": 0,
+	"weapons": []
 }
 
 func _ready() -> void:
@@ -38,6 +50,7 @@ func _ready() -> void:
 	get_units()
 	get_enemies()
 	get_gachas()
+	get_weapons()
 
 
 func get_units() -> void:
@@ -57,3 +70,9 @@ func get_gachas() -> void:
 	gachas_file.open("res://Data/gachas.json", File.READ)
 	gachas = parse_json(gachas_file.get_as_text())
 	gachas_file.close()
+
+func get_weapons() -> void:
+	var weapons_file = File.new()
+	weapons_file.open("res://Data/weapons.json", File.READ)
+	weapons_list = parse_json(weapons_file.get_as_text())
+	weapons_file.close()

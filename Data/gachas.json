@@ -1,16 +1,13 @@
 {
 	"starting": {
-		"star3": [],
 		"star4": [],
 		"star5": []
 	},
 	"regular": {
-		"star3": [],
 		"star4": [],
 		"star5": []
 	},
 	"special": {
-		"star3": [],
 		"star4": [
 			"PACK1_2",
 			"PACK1_3",

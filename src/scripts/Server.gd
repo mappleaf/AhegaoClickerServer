@@ -158,14 +158,11 @@ remote func open_gacha(gacha_type) -> void:
 				var d = randf()
 				
 				#TESTING!!!
-				while d < 0.7:
-					d = randf()
+				#while d < 0.7:
+				#	d = randf()
 				
 				if d < 0.7:
-					var drops = ServerData.gachas.special.star3.duplicate()
-					drops.shuffle()
-					var drop_key = drops.pop_front()
-					add_unit(container.username, drop_key)
+					add_weapon(peer_id, GenerateWeapon())
 				elif d < 0.94:
 					var drops = ServerData.gachas.special.star4.duplicate()
 					drops.shuffle()
@@ -178,6 +175,72 @@ remote func open_gacha(gacha_type) -> void:
 					add_unit(container.username, drop_key)
 			else:
 				print(str("Not enough special gacha on user ", peer_id))
+
+func add_weapon(peer_id, weapon) -> void:
+	var container = get_node(str(peer_id))
+	
+	PlayerData.player_data[container.username].weapons.append(weapon)
+	container.weapons.append(weapon)
+	
+	send_user_weapons(peer_id)
+
+func GenerateWeapon() -> Dictionary:
+	var new_weapon = {}
+	new_weapon["id"] = WeaponDetermineType()
+	new_weapon["rarity"] = WeaponDetermineRarity()
+	
+	var is_enchanted = randf()
+	if is_enchanted <= 0.1:
+		new_weapon["enchant"] = WeaponDetermineEnchantment()
+	else:
+		new_weapon["enchant"] = null
+	
+	for i in ServerData.weapon_stats:
+		if ServerData.weapons_list[new_weapon["id"]][i] != null:
+			new_weapon[i] = WeaponDetermineStats(new_weapon["id"], new_weapon["rarity"], i)
+	
+	return new_weapon
+
+func WeaponDetermineType() -> String:
+	var new_weapon_id
+	var weapon_ids = ServerData.weapons_list.keys()
+	new_weapon_id = weapon_ids[randi() % weapon_ids.size()]
+	return new_weapon_id
+
+func WeaponDetermineRarity() -> String:
+	var new_weapon_rarity
+	var rarities = ServerData.weapon_rarity_distribution.keys()
+	
+	var rarity_roll = randi() % 100 + 1
+	for i in rarities:
+		if rarity_roll <= ServerData.weapon_rarity_distribution[i]:
+			new_weapon_rarity = i
+			break
+		else:
+			rarity_roll -= ServerData.weapon_rarity_distribution[i]
+	
+	return new_weapon_rarity
+
+func WeaponDetermineEnchantment():
+	return null
+
+func WeaponDetermineStats(id, rarity, stat):
+	var stat_value
+	if ServerData.weapon_scaling_stats.has(stat):
+		stat_value = int(ServerData.weapons_list[id][stat]) * ServerData.weapons_list[id][rarity + "Multi"]
+	else:
+		stat_value = ServerData.weapons_list[id][stat]
+	return stat_value
+
+
+remote func get_user_weapons() -> void:
+	var peer_id = get_tree().get_rpc_sender_id()
+	var weapons = get_node(str(peer_id)).weapons
+	rpc_id(peer_id, "_return_weapons", weapons)
+
+func send_user_weapons(peer_id) -> void:
+	var weapons = get_node(str(peer_id)).weapons
+	rpc_id(peer_id, "_return_weapons", weapons)
 
 func send_user_money(peer_id) -> void:
 	var count = get_node(str(peer_id)).money

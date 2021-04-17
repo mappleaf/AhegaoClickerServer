@@ -1,0 +1,54 @@
+{
+  "10001": {
+    "name": "KA-47",
+    "type": "assault",
+    "damage": 72,
+    "coinMultiplier": "1.92",
+    "enchantability": "1.0",
+    "sharpen": 0,
+    "commonMulti": 1,
+    "uncommonMulti": "1.15",
+    "rareMulti": "1.4",
+    "epicMulti": "1.8",
+    "legendaryMulti": "2.4"
+  },
+  "10002": {
+    "name": "UPP-45",
+    "type": "submachine",
+    "damage": 43,
+    "coinMultiplier": "1.28",
+    "enchantability": "1.52",
+    "sharpen": 0,
+    "commonMulti": 1,
+    "uncommonMulti": "1.15",
+    "rareMulti": "1.4",
+    "epicMulti": "1.8",
+    "legendaryMulti": "2.4"
+  },
+  "10003": {
+    "name": "Chick-90",
+    "type": "submachine",
+    "damage": 33,
+    "coinMultiplier": "0.76",
+    "enchantability": "0.76",
+    "sharpen": 0,
+    "commonMulti": 1,
+    "uncommonMulti": "1.15",
+    "rareMulti": "1.4",
+    "epicMulti": "1.8",
+    "legendaryMulti": "2.4"
+  },
+  "10004": {
+    "name": "Нож",
+    "type": "knife",
+    "damage": 11,
+    "coinMultiplier": "1.0",
+    "enchantability": null,
+    "sharpen": 0,
+    "commonMulti": 1,
+    "uncommonMulti": "1.15",
+    "rareMulti": "1.4",
+    "epicMulti": "1.8",
+    "legendaryMulti": "2.4"
+  }
+}
