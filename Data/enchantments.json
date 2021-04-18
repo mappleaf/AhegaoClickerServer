@@ -1,0 +1,68 @@
+{
+	"Nasty": {
+		"stats": [
+			"damage",
+			"coinMultiplier",
+			"enchantability"
+			
+		],
+		"stats_min": [
+			-0.11,
+			-0.15,
+			-0.20
+		],
+		"stats_max": [
+			-0.4,
+			-0.3,
+			-0.1
+		]
+	},
+	"Handy": {
+		"stats": [
+			"damage",
+			"enchantability"
+			
+		],
+		"stats_min": [
+			0.4,
+			-0.4
+		],
+		"stats_max": [
+			0.15,
+			0.3
+		]
+	},
+	"Sluggish": {
+		"stats": [
+			"damage",
+			"enchantability"
+			
+		],
+		"stats_min": [
+			-0.22,
+			-0.1
+		],
+		"stats_max": [
+			-0.30,
+			-0.18
+		]
+	},
+	"Rapid": {
+		"stats": [
+			"damage",
+			"coinMultiplier",
+			"enchantability"
+			
+		],
+		"stats_min": [
+			0.14,
+			0.19,
+			0.3
+		],
+		"stats_max": [
+			0.38,
+			0.25,
+			0.7
+		]
+	}
+}

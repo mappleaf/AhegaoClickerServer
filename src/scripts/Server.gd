@@ -188,16 +188,26 @@ func GenerateWeapon() -> Dictionary:
 	var new_weapon = {}
 	new_weapon["id"] = WeaponDetermineType()
 	new_weapon["rarity"] = WeaponDetermineRarity()
+	new_weapon["modifiers"] = {}
 	
-	var is_enchanted = randf()
-	if is_enchanted <= 0.1:
-		new_weapon["enchant"] = WeaponDetermineEnchantment()
+	new_weapon["enchanted"] = WeaponDetermineEnchantment(new_weapon["rarity"])
+	if new_weapon["enchanted"]:
+		new_weapon["prefix"] = WeaponDeterminePrefix()
 	else:
-		new_weapon["enchant"] = null
+		new_weapon["prefix"] = null
+	
+#	var is_enchanted = randf()
+#	if is_enchanted <= 0.1:
+#		new_weapon["enchanted"] = WeaponDetermineEnchantment()
+#	else:
+#		new_weapon["enchanted"] = false
 	
 	for i in ServerData.weapon_stats:
 		if ServerData.weapons_list[new_weapon["id"]][i] != null:
-			new_weapon[i] = WeaponDetermineStats(new_weapon["id"], new_weapon["rarity"], i)
+			var stats_array = WeaponDetermineStats(new_weapon["id"], new_weapon["rarity"], i, new_weapon["prefix"])
+			new_weapon[i] = stats_array[0]
+			if new_weapon["enchanted"]:
+				new_weapon["modifiers"][i] = stats_array[1]
 	
 	return new_weapon
 
@@ -221,16 +231,53 @@ func WeaponDetermineRarity() -> String:
 	
 	return new_weapon_rarity
 
-func WeaponDetermineEnchantment():
-	return null
+func WeaponDetermineEnchantment(rarity) -> bool:
+	var is_enchanted
+	var enchant_roll = randi() % 100 + 1
+	if enchant_roll <= ServerData.weapon_enchanted_chance[rarity]:
+		is_enchanted = true
+	else:
+		is_enchanted = false
+	
+	return is_enchanted
 
-func WeaponDetermineStats(id, rarity, stat):
+func WeaponDeterminePrefix() -> String:
+	return ServerData.enchantments[randi() % ServerData.enchantments.size()]
+
+func WeaponDetermineStats(id, rarity, stat, prefix):
 	var stat_value
+	var prefix_stat_value
+	var min_stat_value
+	var max_stat_value
+	var percent
+	
 	if ServerData.weapon_scaling_stats.has(stat):
-		stat_value = int(ServerData.weapons_list[id][stat]) * ServerData.weapons_list[id][rarity + "Multi"]
+		stat_value = int(ServerData.weapons_list[id][stat] * ServerData.weapons_list[id][rarity + "Multi"])
 	else:
 		stat_value = ServerData.weapons_list[id][stat]
-	return stat_value
+		
+	if prefix != null:
+		var stats = []
+		for stat in ServerData.enchantments_list[prefix]["stats"].size():
+			stats.append(stat)
+		
+		for p in ServerData.enchantments_list[prefix]["stats"].size():
+			if p == stats[p]:
+				min_stat_value = ServerData.enchantments_list[prefix]["stats_min"][p]
+				max_stat_value = ServerData.enchantments_list[prefix]["stats_max"][p]
+				percent = rand_range(min_stat_value, max_stat_value)
+				break
+		
+		if percent == 0:
+			return stat_value
+		
+		if percent > 0:
+			stat_value = int(stat_value + stat_value * percent)
+		else:
+			percent = -percent
+			stat_value = int(stat_value - stat_value * percent)
+	
+	return [stat_value, percent]
 
 
 remote func get_user_weapons() -> void:

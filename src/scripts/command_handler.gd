@@ -19,6 +19,8 @@ const valid_commands = [
 	["set_stardust",
 		[ARG_STRING, ARG_INT]],
 	["stop",
+		[]],
+	["generate_weapon",
 		[]]
 ]
 
@@ -84,3 +86,6 @@ func set_gacha(username, type, count) -> String:
 func stop() -> void:
 	PlayerData.save_player_data()
 	get_tree().quit()
+
+func generate_weapon() -> String:
+	return main_interface.GenerateWeapon()
